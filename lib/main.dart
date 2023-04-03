@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Expanded(child: HeaderPage(number)),
-            Expanded(child: BottomPage(add)),  // 1급 함수 자체를 넘긴다. // 그래서 함수를 ()안붙이고 이름으로만 사용함 1급이니까
-            Expanded(child: BottomPage(down)),
+            Expanded(child: BottomPage(addOrMinus: add, text: "증가")),  // 1급 함수 자체를 넘긴다. // 그래서 함수를 ()안붙이고 이름으로만 사용함 1급이니까
+            Expanded(child: BottomPage(addOrMinus: add, text: "감소")),
           ],
         ),
       ),
@@ -90,13 +90,17 @@ class HeaderPage extends StatelessWidget { // stateless로 변경 (
 // 즉 상태 관리는 stateful과 stateless의 부모가 관리 한다. 상태를 부모한테 넘기면 연결이 된다.
 // 이때 부모를 stateful로 바꿀수도 있는데 stateful의 단위 ? 범위를 최대한 작게 잡아야한다. 왜냐하면 stateful은 상태가 변하면 변경감지를 하고 변한 데이터를
 // 다시 그리게 되는데 이때 범위가 크다면 느려질수밖에 없다.
+
+// 이때 상태변수가 변경되면 옵저버 패턴에 의해서 지켜보고 있다가 해시코드가 변경되므로 부분 렌더링이나 전체렌더링을 진행한다.
+// 이러한 상태변경은 옵저버패턴으로 구현되는데 pub/sub로 나눠져 있는 개념으로 Reactive..
 }
 
 class BottomPage extends StatelessWidget {
   // 전달 받을 함수 설정
   // Function add; 이게 정확한 표현이지만 아래처럼 추상적으로 사용- 타입추론
-   final add;
-   BottomPage(this.add, {Key? key}) : super(key: key);
+   final addOrMinus;
+   final text;
+   BottomPage({required this.addOrMinus, required this.text,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +113,9 @@ class BottomPage extends StatelessWidget {
               minimumSize: Size(300, 200)
             ),
           onPressed: (){
-            add();
+            addOrMinus();
           },
-          child: Text("증가", style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),),
+          child: Text(text, style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),),
         ),
       ),
     );
