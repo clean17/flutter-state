@@ -9,11 +9,9 @@ void main() {
 
 class Counter extends StateNotifier<int> {
   Counter(super.state);
-
   void add() {
     state++;
   }
-
   void down() {
     state--;
   }
@@ -160,7 +158,6 @@ class BottomPage extends ConsumerWidget {
           onPressed: () {
             text == "증가" ? (ref.read(countProvider.notifier).add())
             : (ref.read(countProvider.notifier).down());
-            print("누름");
           },
           child: Text(
             text,
